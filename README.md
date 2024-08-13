@@ -11,6 +11,7 @@ RoastGitHub API is a service that interacts with GitHub to fetch user profiles, 
 ## Requirements
 
 - Go 1.22+
+- Docker
 - Make
 
 ## Installation
@@ -44,7 +45,13 @@ You can run the API using Docker or directly with Make.
     make run
     ```
 
-2. Swagger documentation is available at `http://localhost:3000/swagger`.
+2. **Run the application with docker:**
+
+    ```bash
+    make docker.run
+    ```
+
+3. Swagger documentation is available at `http://localhost:3000/swagger`.
 
 ## Project Structure
 
