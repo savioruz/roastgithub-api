@@ -3,7 +3,7 @@ definitions:
   models.ContentRequest:
     properties:
       lang:
-        type: string
+        $ref: '#/definitions/models.Language'
       username:
         type: string
     type: object
@@ -12,6 +12,16 @@ definitions:
       generated_content:
         type: string
     type: object
+  models.Language:
+    enum:
+    - auto
+    - id
+    - en
+    type: string
+    x-enum-varnames:
+    - LangAuto
+    - LangID
+    - LangEN
 info:
   contact:
     email: jakueenak@gmail.com
@@ -22,7 +32,7 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   termsOfService: http://swagger.io/terms/
   title: Roast GitHub API
-  version: "1.0"
+  version: "0.1"
 paths:
   /roast:
     post:

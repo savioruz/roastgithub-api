@@ -12,7 +12,7 @@
             "name": "Apache 2.0",
             "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         },
-        "version": "1.0"
+        "version": "0.1"
     },
     "basePath": "/api",
     "paths": {
@@ -56,7 +56,7 @@
             "type": "object",
             "properties": {
                 "lang": {
-                    "type": "string"
+                    "$ref": "#/definitions/models.Language"
                 },
                 "username": {
                     "type": "string"
@@ -70,6 +70,19 @@
                     "type": "string"
                 }
             }
+        },
+        "models.Language": {
+            "type": "string",
+            "enum": [
+                "auto",
+                "id",
+                "en"
+            ],
+            "x-enum-varnames": [
+                "LangAuto",
+                "LangID",
+                "LangEN"
+            ]
         }
     },
     "securityDefinitions": {

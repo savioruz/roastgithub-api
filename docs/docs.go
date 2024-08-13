@@ -63,7 +63,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "lang": {
-                    "type": "string"
+                    "$ref": "#/definitions/models.Language"
                 },
                 "username": {
                     "type": "string"
@@ -77,6 +77,19 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "models.Language": {
+            "type": "string",
+            "enum": [
+                "auto",
+                "id",
+                "en"
+            ],
+            "x-enum-varnames": [
+                "LangAuto",
+                "LangID",
+                "LangEN"
+            ]
         }
     },
     "securityDefinitions": {
@@ -90,7 +103,7 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "1.0",
+	Version:          "0.1",
 	Host:             "",
 	BasePath:         "/api",
 	Schemes:          []string{},
