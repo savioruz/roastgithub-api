@@ -1,0 +1,54 @@
+basePath: /api
+definitions:
+  models.ContentRequest:
+    properties:
+      lang:
+        type: string
+      username:
+        type: string
+    type: object
+  models.ContentResponse:
+    properties:
+      generated_content:
+        type: string
+    type: object
+info:
+  contact:
+    email: jakueenak@gmail.com
+    name: API Support
+  description: This is an auto-generated API Docs.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Roast GitHub API
+  version: "1.0"
+paths:
+  /roast:
+    post:
+      consumes:
+      - application/json
+      description: Get roast by username and data
+      parameters:
+      - description: Prompt
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.ContentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ContentResponse'
+      summary: get roast by username and data
+      tags:
+      - Roast
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
