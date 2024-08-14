@@ -42,7 +42,7 @@ func GetRoast(c *fiber.Ctx) error {
 	defer func(redisClient *cache.RedisClient) {
 		err := redisClient.Close()
 		if err != nil {
-
+			log.Fatalf("Failed to close Redis connection: %v", err)
 		}
 	}(redisClient)
 
@@ -61,10 +61,12 @@ func GetRoast(c *fiber.Ctx) error {
 
 	userProfile, err := githubService.GetUserProfile(ctx, req.Username)
 	if err != nil {
+		log.Errorf("Failed to get user profile: %v", err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to get user profile"})
 	}
 
 	if userProfile == nil {
+		log.Errorf("User not found: %s", req.Username)
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": "User not found"})
 	}
 
@@ -86,6 +88,7 @@ func GetRoast(c *fiber.Ctx) error {
 	if *userProfile.Repos > 0 {
 		userRepos, err := githubService.GetUserRepositories(ctx, req.Username)
 		if err != nil {
+			log.Errorf("Failed to get user repositories: %v", err)
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to get user repositories"})
 		}
 
@@ -106,6 +109,7 @@ func GetRoast(c *fiber.Ctx) error {
 
 	data, err := json.Marshal(githubData)
 	if err != nil {
+		log.Errorf("Failed to convert GitHub data to JSON: %v", err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to convert GitHub data to JSON"})
 	}
 
@@ -130,6 +134,7 @@ func GetRoast(c *fiber.Ctx) error {
 
 	resp, err := geminiService.GenerateContent(ctx, prompt)
 	if err != nil {
+		log.Errorf("Failed to generate content: %v", err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to generate"})
 	}
 
