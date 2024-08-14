@@ -16,9 +16,9 @@ type GeminiService struct {
 }
 
 func NewGeminiService() *GeminiService {
-	key := os.Getenv("API_KEY")
+	key := os.Getenv("GEMINI_API_KEY")
 	if key == "" {
-		log.Fatal("consider setting API_KEY environment variable")
+		log.Fatal("consider setting GEMINI_API_KEY environment variable")
 	}
 
 	ctx := context.Background()
