@@ -37,6 +37,22 @@ RoastGitHub API is a service that interacts with GitHub to fetch user profiles, 
 
 You can run the API using Docker or directly with Make.
 
+### Docker
+
+1. **Run redis:**
+
+    ```bash
+   make docker.redis
+   ```
+
+2. **Run the application:**
+
+    ```bash
+    make docker.run
+    ```
+
+For production, you need to secure redis on Makefile with a password.
+
 ### Make
 
 1. **Run the application:**
@@ -45,13 +61,11 @@ You can run the API using Docker or directly with Make.
     make run
     ```
 
-2. **Run the application with docker:**
+You need to have Redis running on your machine.
 
-    ```bash
-    make docker.run
-    ```
+## API Documentation
 
-3. Swagger documentation is available at `http://localhost:3000/swagger`.
+Swagger documentation is available at: http://localhost:3000/swagger.
 
 ## Project Structure
 
@@ -61,11 +75,13 @@ You can run the API using Docker or directly with Make.
 │   ├── handlers/        # HTTP handler functions
 │   └── models/          # Data structures and models
 ├── docs/                # Documentation files
-└── pkg/
-    ├── middleware/      # Middleware functions for request handling
-    ├── repository/      # Data access layer
-    ├── routes/          # API route definitions
-    └── utils/           # Utility functions including GitHub and Gemini services
+├── pkg/
+│   ├── middleware/      # Middleware functions for request handling
+│   ├── repository/      # Data access layer
+│   ├── routes/          # API route definitions
+│   └── utils/           # Utility functions including GitHub and Gemini services
+└── platform/
+    └── cache/           # Redis caching implementation
 
 ```
 
@@ -76,3 +92,7 @@ Feel free to open issues or submit pull requests with improvements.
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Reference
+
+https://github.com/create-go-app/fiber-go-template

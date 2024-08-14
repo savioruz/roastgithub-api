@@ -43,3 +43,16 @@ docker.network.add:
 
 docker.run: swag docker.network.add docker.build
 	docker run -d --name $(APP_NAME) --network net-$(APP_NAME) -p 3000:3000 $(APP_NAME):$(APP_VERSION)
+
+docker.stop:
+	docker stop $(APP_NAME)
+
+docker.redis.run:
+	docker run --rm -d \
+		--name redis-$(APP_NAME) \
+		--network net-$(APP_NAME) \
+		-p 6379:6379 \
+		redis:alpine
+
+docker.stop.redis:
+	docker stop redis-$(APP_NAME)
