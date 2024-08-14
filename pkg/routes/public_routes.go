@@ -2,7 +2,7 @@ package routes
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"roastgithub-api/app/handlers"
+	"github.com/savioruz/roastgithub-api/app/handlers"
 )
 
 func PublicRoutes(a *fiber.App) {

@@ -5,10 +5,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gofiber/fiber/v2"
-	"roastgithub-api/app/models"
-	"roastgithub-api/pkg/repository"
-	"roastgithub-api/pkg/utils"
+	"github.com/gofiber/fiber/v2/log"
+	"github.com/savioruz/roastgithub-api/app/models"
+	"github.com/savioruz/roastgithub-api/pkg/repository"
+	"github.com/savioruz/roastgithub-api/pkg/utils"
+	"github.com/savioruz/roastgithub-api/platform/cache"
 	"strings"
+	"time"
 )
 
 // GetRoast func get content from AI models
@@ -31,6 +34,29 @@ func GetRoast(c *fiber.Ctx) error {
 	}
 
 	ctx := context.Background()
+
+	redisClient, err := cache.NewRedisConnection()
+	if err != nil {
+		log.Fatalf("Couldn't connect to Redis: %v", err)
+	}
+	defer func(redisClient *cache.RedisClient) {
+		err := redisClient.Close()
+		if err != nil {
+
+		}
+	}(redisClient)
+
+	cacheKey := fmt.Sprintf("gemini:content:%s:%s", req.Username, req.Lang)
+
+	cachedContent, err := redisClient.Get(ctx, cacheKey)
+	if err == nil && cachedContent != "" {
+		return c.Status(fiber.StatusOK).JSON(fiber.Map{
+			"data": models.ContentResponse{
+				GeneratedContent: cachedContent,
+			},
+		})
+	}
+
 	githubService := utils.NewGithubService()
 
 	userProfile, err := githubService.GetUserProfile(ctx, req.Username)
@@ -105,6 +131,11 @@ func GetRoast(c *fiber.Ctx) error {
 	resp, err := geminiService.GenerateContent(ctx, prompt)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to generate"})
+	}
+
+	err = redisClient.Set(ctx, cacheKey, resp, 4*time.Hour)
+	if err != nil {
+		log.Errorf("Failed to cache content: %v", err)
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{

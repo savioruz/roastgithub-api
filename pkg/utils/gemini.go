@@ -16,9 +16,9 @@ type GeminiService struct {
 }
 
 func NewGeminiService() *GeminiService {
-	key := os.Getenv("API_KEY")
+	key := os.Getenv("GEMINI_API_KEY")
 	if key == "" {
-		log.Fatal("consider setting API_KEY environment variable")
+		log.Fatal("consider setting GEMINI_API_KEY environment variable")
 	}
 
 	ctx := context.Background()
@@ -54,13 +54,6 @@ func (s *GeminiService) GenerateContent(ctx context.Context, prompt string) (str
 		return "", err
 	}
 
-	// Clean up client connection when done
-	defer func() {
-		if err := s.client.Close(); err != nil {
-			log.Fatal(err)
-		}
-	}()
-
 	var result strings.Builder
 	if resp != nil && resp.Candidates != nil {
 		for _, c := range resp.Candidates {
@@ -72,5 +65,13 @@ func (s *GeminiService) GenerateContent(ctx context.Context, prompt string) (str
 		}
 	}
 
-	return result.String(), nil
+	generatedContent := result.String()
+
+	defer func() {
+		if err := s.client.Close(); err != nil {
+			log.Fatal(err)
+		}
+	}()
+
+	return generatedContent, nil
 }

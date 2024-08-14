@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/google/go-github/v63/github"
+	"github.com/savioruz/roastgithub-api/app/models"
 	"os"
-	"roastgithub-api/app/models"
 )
 
 type GithubService struct {

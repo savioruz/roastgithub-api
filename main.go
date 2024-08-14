@@ -2,12 +2,12 @@ package main
 
 import (
 	"github.com/gofiber/fiber/v2"
-	_ "github.com/joho/godotenv/autoload" // load .env file automatically
-	"log"
+	_ "github.com/joho/godotenv/autoload"        // load .env file automatically
+	_ "github.com/savioruz/roastgithub-api/docs" // load API Docs files (Swagger)
+	"github.com/savioruz/roastgithub-api/pkg/middleware"
+	"github.com/savioruz/roastgithub-api/pkg/routes"
+	"github.com/savioruz/roastgithub-api/pkg/utils"
 	"os"
-	_ "roastgithub-api/docs" // load API Docs files (Swagger)
-	"roastgithub-api/pkg/middleware"
-	"roastgithub-api/pkg/routes"
 )
 
 // @title Roast GitHub API
@@ -32,16 +32,10 @@ func main() {
 	routes.PublicRoutes(app)
 	routes.SwaggerRoute(app)
 
-	err := app.Listen(getPort())
-	if err != nil {
-		log.Fatalf("Error: %v", err)
+	// Start server (with or without graceful shutdown).
+	if os.Getenv("STAGE_STATUS") == "dev" {
+		utils.StartServer(app)
+	} else {
+		utils.StartServerWithGracefulShutdown(app)
 	}
-}
-
-func getPort() string {
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "3000"
-	}
-	return ":" + port
 }
