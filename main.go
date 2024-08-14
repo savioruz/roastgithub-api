@@ -2,12 +2,12 @@ package main
 
 import (
 	"github.com/gofiber/fiber/v2"
-	_ "github.com/joho/godotenv/autoload" // load .env file automatically
+	_ "github.com/joho/godotenv/autoload"        // load .env file automatically
+	_ "github.com/savioruz/roastgithub-api/docs" // load API Docs files (Swagger)
+	"github.com/savioruz/roastgithub-api/pkg/middleware"
+	"github.com/savioruz/roastgithub-api/pkg/routes"
+	"github.com/savioruz/roastgithub-api/pkg/utils"
 	"os"
-	_ "roastgithub-api/docs" // load API Docs files (Swagger)
-	"roastgithub-api/pkg/middleware"
-	"roastgithub-api/pkg/routes"
-	"roastgithub-api/pkg/utils"
 )
 
 // @title Roast GitHub API

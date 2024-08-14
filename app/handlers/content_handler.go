@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gofiber/fiber/v2"
-	"roastgithub-api/app/models"
-	"roastgithub-api/pkg/repository"
-	"roastgithub-api/pkg/utils"
+	"github.com/savioruz/roastgithub-api/app/models"
+	"github.com/savioruz/roastgithub-api/pkg/repository"
+	"github.com/savioruz/roastgithub-api/pkg/utils"
 	"strings"
 )
 
