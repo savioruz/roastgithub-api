@@ -1,5 +1,5 @@
 # Stage 1
-FROM golang:1.22-alpine AS builder
+FROM golang:1.23-alpine AS builder
 LABEL maintainer="savioruz <jakueenak@gmail.com>"
 
 # Install dependencies
