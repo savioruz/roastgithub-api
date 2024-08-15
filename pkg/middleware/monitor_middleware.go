@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/healthcheck"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
 )
 
@@ -11,4 +12,6 @@ func MonitorMiddleware(a *fiber.App) {
 			Title: "Roast Github API Monitor",
 		},
 	))
+
+	a.Use(healthcheck.New())
 }
