@@ -51,7 +51,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.ContentResponse"
+                            "$ref": "#/definitions/models.ContentResponseSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ContentResponseFailure"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ContentResponseFailure"
                         }
                     }
                 }
@@ -61,12 +73,27 @@ const docTemplate = `{
     "definitions": {
         "models.ContentRequest": {
             "type": "object",
+            "required": [
+                "lang",
+                "username"
+            ],
             "properties": {
                 "lang": {
-                    "$ref": "#/definitions/models.Language"
+                    "enum": [
+                        "auto",
+                        "id",
+                        "en"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.Language"
+                        }
+                    ]
                 },
                 "username": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 32,
+                    "minLength": 6
                 }
             }
         },
@@ -75,6 +102,22 @@ const docTemplate = `{
             "properties": {
                 "generated_content": {
                     "type": "string"
+                }
+            }
+        },
+        "models.ContentResponseFailure": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ContentResponseSuccess": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/models.ContentResponse"
                 }
             }
         },
