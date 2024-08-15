@@ -1,0 +1,43 @@
+services:
+  - type: web
+    name: roastgithub-api
+    env: docker
+    plan: free
+    branch: main
+    autoDeploy: true
+    dockerfilePath: Dockerfile
+    envVars:
+      - key: STAGE_STATUS
+        value: "prod"
+      - key: APP_NAME
+        value: "roastgithub-api"
+      - key: APP_HOST
+        value: "0.0.0.0"
+      - key: APP_PORT
+        value: "3000"
+      - key: GEMINI_API_KEY
+        value: "YOUR_API_KEY"
+      - key: GITHUB_TOKEN
+        value: "YOUR_GITHUB_TOKEN"
+      - key: REDIS_HOST
+        fromService:
+          name: roastgithub-redis
+          type: redis
+          property: hostname
+      - key: REDIS_PORT
+        fromService:
+          name: roastgithub-redis
+          type: redis
+          property: port
+      - key: REDIS_PASSWORD
+        fromService:
+          name: roastgithub-redis
+          type: redis
+          property: password
+      - key: REDIS_DB_NUMBER
+        value: "0"
+
+databases:
+  - name: roastgithub-redis
+    type: redis
+    plan: free
