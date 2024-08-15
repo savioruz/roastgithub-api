@@ -3,14 +3,34 @@ definitions:
   models.ContentRequest:
     properties:
       lang:
-        $ref: '#/definitions/models.Language'
+        allOf:
+        - $ref: '#/definitions/models.Language'
+        enum:
+        - auto
+        - id
+        - en
       username:
+        maxLength: 32
+        minLength: 6
         type: string
+    required:
+    - lang
+    - username
     type: object
   models.ContentResponse:
     properties:
       generated_content:
         type: string
+    type: object
+  models.ContentResponseFailure:
+    properties:
+      error:
+        type: string
+    type: object
+  models.ContentResponseSuccess:
+    properties:
+      data:
+        $ref: '#/definitions/models.ContentResponse'
     type: object
   models.Language:
     enum:
@@ -52,7 +72,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.ContentResponse'
+            $ref: '#/definitions/models.ContentResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ContentResponseFailure'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ContentResponseFailure'
       summary: get roast by username and data
       tags:
       - Roast

@@ -21,16 +21,19 @@ import (
 // @Accept json
 // @Produce json
 // @Param data body models.ContentRequest true "Prompt"
-// @Success 200 {object} models.ContentResponse
+// @Success 200 {object} models.ContentResponseSuccess
+// @Failure 400 {object} models.ContentResponseFailure
+// @Failure 500 {object} models.ContentResponseFailure
 // @Router /roast [post]
 func GetRoast(c *fiber.Ctx) error {
 	var req models.ContentRequest
 	if err := c.BodyParser(&req); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid request"})
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Error parsing request"})
 	}
 
-	if req.Lang != models.LangAuto && req.Lang != models.LangID && req.Lang != models.LangEN {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid language request"})
+	validate := utils.NewValidator()
+	if err := validate.Struct(req); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": utils.ValidatorErrors(err)})
 	}
 
 	ctx := context.Background()
