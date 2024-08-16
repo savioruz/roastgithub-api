@@ -31,6 +31,7 @@ func main() {
 
 	routes.PublicRoutes(app)
 	routes.SwaggerRoute(app)
+	routes.NotFoundRoute(app)
 
 	// Start server (with or without graceful shutdown).
 	if os.Getenv("STAGE_STATUS") == "dev" {
