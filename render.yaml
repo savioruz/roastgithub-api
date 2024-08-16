@@ -24,23 +24,19 @@ services:
         fromService:
           name: roastgithub-redis
           type: redis
-          property: hostname
+          property: host
       - key: REDIS_PORT
         fromService:
           name: roastgithub-redis
           type: redis
           property: port
       - key: REDIS_PASSWORD
-        fromService:
-          name: roastgithub-redis
-          type: redis
-          property: password
+        value: "" # Coz use internal redis
       - key: REDIS_DB_NUMBER
         value: "0"
   # Redis service
   - type: redis
     name: roastgithub-redis
     plan: free
-    ipAllowList:
-      - source: 0.0.0.0/0
-        description: Allow all IP addresses
+    ipAllowList: [] # Internal redis
+
