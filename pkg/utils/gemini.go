@@ -29,7 +29,7 @@ func NewGeminiService() *GeminiService {
 
 	model := client.GenerativeModel("gemini-1.5-flash")
 	model.SetTemperature(1.0)
-	model.SetMaxOutputTokens(150)
+	model.SetMaxOutputTokens(180)
 	model.SafetySettings = []*genai.SafetySetting{
 		{
 			Category:  genai.HarmCategoryDangerousContent,
