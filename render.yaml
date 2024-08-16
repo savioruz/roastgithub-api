@@ -1,7 +1,8 @@
 services:
+  # Web service
   - type: web
+    runtime: docker
     name: roastgithub-api
-    env: docker
     plan: free
     branch: main
     autoDeploy: true
@@ -36,8 +37,10 @@ services:
           property: password
       - key: REDIS_DB_NUMBER
         value: "0"
-
-databases:
-  - name: roastgithub-redis
-    service: redis
+  # Redis service
+  - type: redis
+    name: roastgithub-redis
     plan: free
+    ipAllowList:
+      - source: 0.0.0.0/0
+        description: Allow all IP addresses
