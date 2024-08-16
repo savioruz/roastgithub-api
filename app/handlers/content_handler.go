@@ -53,8 +53,8 @@ func GetRoast(c *fiber.Ctx) error {
 
 	cachedContent, err := redisClient.Get(ctx, cacheKey)
 	if err == nil && cachedContent != "" {
-		return c.Status(fiber.StatusOK).JSON(fiber.Map{
-			"data": models.ContentResponse{
+		return c.Status(fiber.StatusOK).JSON(models.ContentResponseSuccess{
+			Data: models.ContentResponse{
 				GeneratedContent: cachedContent,
 			},
 		})
@@ -146,8 +146,8 @@ func GetRoast(c *fiber.Ctx) error {
 		log.Errorf("Failed to cache content: %v", err)
 	}
 
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"data": models.ContentResponse{
+	return c.Status(fiber.StatusOK).JSON(models.ContentResponseSuccess{
+		Data: models.ContentResponse{
 			GeneratedContent: resp,
 		},
 	})

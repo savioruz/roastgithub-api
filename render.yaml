@@ -39,5 +39,5 @@ services:
 
 databases:
   - name: roastgithub-redis
-    type: redis
+    service: redis
     plan: free
