@@ -15,10 +15,12 @@ type GeminiService struct {
 	model  *genai.GenerativeModel
 }
 
-func NewGeminiService() *GeminiService {
-	key := os.Getenv("GEMINI_API_KEY")
+func NewGeminiService(key string) *GeminiService {
 	if key == "" {
-		log.Fatal("consider setting GEMINI_API_KEY environment variable")
+		key = os.Getenv("GEMINI_API_KEY")
+		if key == "" {
+			log.Fatal("Consider setting GEMINI_API_KEY environment variable")
+		}
 	}
 
 	ctx := context.Background()

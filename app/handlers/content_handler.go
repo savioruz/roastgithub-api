@@ -35,6 +35,7 @@ func GetRoast(c *fiber.Ctx) error {
 	if err := validate.Struct(req); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": utils.ValidatorErrors(err)})
 	}
+	key := req.Key
 
 	ctx := context.Background()
 
@@ -66,11 +67,6 @@ func GetRoast(c *fiber.Ctx) error {
 	if err != nil {
 		log.Errorf("Failed to get user profile: %v", err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to get user profile"})
-	}
-
-	if userProfile == nil {
-		log.Errorf("User not found: %s", req.Username)
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": "User not found"})
 	}
 
 	var language models.Language
@@ -133,7 +129,7 @@ func GetRoast(c *fiber.Ctx) error {
 		)
 	}
 
-	geminiService := utils.NewGeminiService()
+	geminiService := utils.NewGeminiService(*key)
 
 	resp, err := geminiService.GenerateContent(ctx, prompt)
 	if err != nil {

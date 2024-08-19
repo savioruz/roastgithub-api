@@ -78,6 +78,9 @@ const docTemplate = `{
                 "username"
             ],
             "properties": {
+                "key": {
+                    "type": "string"
+                },
                 "lang": {
                     "enum": [
                         "auto",

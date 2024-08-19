@@ -2,6 +2,8 @@ basePath: /api
 definitions:
   models.ContentRequest:
     properties:
+      key:
+        type: string
       lang:
         allOf:
         - $ref: '#/definitions/models.Language'

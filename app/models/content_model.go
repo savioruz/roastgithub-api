@@ -11,6 +11,7 @@ const (
 type ContentRequest struct {
 	Username string   `json:"username" validate:"required,min=6,max=32"`
 	Lang     Language `json:"lang" validate:"required,oneof=auto id en"`
+	Key      *string  `json:"key,omitempty" validate:"omitempty"`
 }
 
 type ContentResponse struct {
