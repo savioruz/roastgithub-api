@@ -8,7 +8,9 @@ type GithubData struct {
 }
 
 type ProfileResponse struct {
+	Username  *string           `json:"username,omitempty"`
 	Name      *string           `json:"name,omitempty"`
+	AvatarURL *string           `json:"avatar_url,omitempty"`
 	Bio       *string           `json:"bio,omitempty"`
 	Company   *string           `json:"company,omitempty"`
 	Location  *string           `json:"location,omitempty"`

@@ -141,13 +141,26 @@ func GetRoast(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to generate"})
 	}
 
-	err = redisClient.Set(ctx, cacheKey, resp, 4*time.Hour)
+	cacheData := models.ContentResponse{
+		Username:         *userProfile.Username,
+		AvatarURL:        *userProfile.AvatarURL,
+		GeneratedContent: resp,
+	}
+
+	cachedData, err := json.Marshal(cacheData)
+	if err != nil {
+		log.Errorf("Failed to marshal cache data: %v", err)
+	}
+
+	err = redisClient.Set(ctx, cacheKey, cachedData, 4*time.Hour)
 	if err != nil {
 		log.Errorf("Failed to cache content: %v", err)
 	}
 
 	return c.Status(fiber.StatusOK).JSON(models.ContentResponseSuccess{
 		Data: models.ContentResponse{
+			Username:         *userProfile.Username,
+			AvatarURL:        *userProfile.AvatarURL,
 			GeneratedContent: resp,
 		},
 	})

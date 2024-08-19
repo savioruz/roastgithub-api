@@ -19,7 +19,11 @@ definitions:
     type: object
   models.ContentResponse:
     properties:
+      avatar_url:
+        type: string
       generated_content:
+        type: string
+      username:
         type: string
     type: object
   models.ContentResponseFailure:

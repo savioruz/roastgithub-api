@@ -100,7 +100,13 @@ const docTemplate = `{
         "models.ContentResponse": {
             "type": "object",
             "properties": {
+                "avatar_url": {
+                    "type": "string"
+                },
                 "generated_content": {
+                    "type": "string"
+                },
+                "username": {
                     "type": "string"
                 }
             }

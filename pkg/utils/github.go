@@ -33,7 +33,9 @@ func (s *GithubService) GetUserProfile(ctx context.Context, username string) (*m
 	}
 
 	return &models.ProfileResponse{
+		Username:  user.Login,
 		Name:      user.Name,
+		AvatarURL: user.AvatarURL,
 		Bio:       user.Bio,
 		Company:   user.Company,
 		Location:  user.Location,

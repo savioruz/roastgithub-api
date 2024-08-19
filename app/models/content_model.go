@@ -14,6 +14,8 @@ type ContentRequest struct {
 }
 
 type ContentResponse struct {
+	Username         string `json:"username"`
+	AvatarURL        string `json:"avatar_url"`
 	GeneratedContent string `json:"generated_content"`
 }
 
