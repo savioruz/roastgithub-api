@@ -54,11 +54,12 @@ func GetRoast(c *fiber.Ctx) error {
 
 	cachedContent, err := redisClient.Get(ctx, cacheKey)
 	if err == nil && cachedContent != "" {
-		return c.Status(fiber.StatusOK).JSON(models.ContentResponseSuccess{
-			Data: models.ContentResponse{
-				GeneratedContent: cachedContent,
-			},
-		})
+		var cachedData models.ContentResponse
+		if err := json.Unmarshal([]byte(cachedContent), &cachedData); err == nil {
+			return c.Status(fiber.StatusOK).JSON(models.ContentResponseSuccess{
+				Data: cachedData,
+			})
+		}
 	}
 
 	githubService := utils.NewGithubService()
