@@ -8,8 +8,6 @@ require (
 	github.com/gofiber/swagger v1.1.0
 	github.com/google/generative-ai-go v0.17.0
 	github.com/google/go-github/v63 v63.0.0
-	github.com/google/go-github/v64 v64.0.0
-	github.com/google/uuid v1.6.0
 	github.com/joho/godotenv v1.5.1
 	github.com/redis/go-redis/v9 v9.6.1
 	github.com/swaggo/swag v1.16.3
@@ -42,6 +40,7 @@ require (
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/s2a-go v0.1.8 // indirect
+	github.com/google/uuid v1.6.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.2 // indirect
 	github.com/googleapis/gax-go/v2 v2.13.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
