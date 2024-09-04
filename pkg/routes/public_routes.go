@@ -6,16 +6,14 @@ import (
 )
 
 func PublicRoutes(a *fiber.App) {
-	route := a.Group("/api/")
+	route := a.Group("/api/v1/")
 
 	// Get
 	a.Get("/", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{
-			"uri":  c.OriginalURL(),
-			"path": c.Path(),
-		})
+		return c.Redirect("/swagger")
 	})
 
 	// Post
-	route.Post("/roast", handlers.GetRoast)
+	route.Post("/roast/github", handlers.GetGithubRoast)
+	route.Post("/roast/resume", handlers.GetResumeRoast)
 }

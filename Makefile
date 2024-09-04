@@ -1,6 +1,6 @@
 APP_NAME = roastgithub-api
 APP_VERSION = 0.0.1
-APP_DESCRIPTION = Roasting GitHub API
+APP_DESCRIPTION = Roasting API using gemini
 APP_AUTHOR = savioruz
 
 clean:
@@ -29,7 +29,7 @@ build: test
 run: swag build
 	./build/$(APP_NAME)
 
-docker.build:
+docker.build: swag
 	docker build -t $(APP_NAME):$(APP_VERSION) .
 
 docker.network.add:
@@ -41,7 +41,7 @@ docker.network.add:
 	fi
 	docker network create net-$(APP_NAME)
 
-docker.run: swag docker.network.add docker.build
+docker.run: docker.network.add
 	docker run -d --name $(APP_NAME) --network net-$(APP_NAME) -p 3000:3000 $(APP_NAME):$(APP_VERSION)
 
 docker.stop:

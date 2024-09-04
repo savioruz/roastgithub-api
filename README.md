@@ -1,6 +1,12 @@
 # RoastGitHub API
 
 RoastGitHub API is a service that interacts with GitHub to fetch user profiles, repositories, and README files, then generates humorous or insightful content using the Gemini AI model.
+Also includes a Redis caching layer to store user profiles and repositories. Other features include roasting user resume.
+
+[![Go](https://img.shields.io/github/go-mod/go-version/savioruz/roastgithub-api)](https://golang.org/)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/savioruz/roastgithub-api)
+[![Go Report Card](https://goreportcard.com/badge/github.com/savioruz/roastgithub-api)](https://goreportcard.com/report/github.com/savioruz/roastgithub-api)
+[![License](https://img.shields.io/github/license/savioruz/roastgithub-api)]
 
 ## Table of Contents
 - [Features](#features)

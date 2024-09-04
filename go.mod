@@ -9,6 +9,7 @@ require (
 	github.com/google/generative-ai-go v0.17.0
 	github.com/google/go-github/v63 v63.0.0
 	github.com/joho/godotenv v1.5.1
+	github.com/ledongthuc/pdf v0.0.0-20240201131950-da5b75280b06
 	github.com/redis/go-redis/v9 v9.6.1
 	github.com/swaggo/swag v1.16.3
 	google.golang.org/api v0.193.0

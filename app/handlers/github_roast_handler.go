@@ -14,26 +14,30 @@ import (
 	"time"
 )
 
-// GetRoast func get content from AI models
+// GetGithubRoast func get content from AI models
 // @Description Get roast by username and data
 // @Summary get roast by username and data
 // @Tags Roast
 // @Accept json
 // @Produce json
-// @Param data body models.ContentRequest true "Prompt"
-// @Success 200 {object} models.ContentResponseSuccess
+// @Param data body models.GithubRequest true "Prompt"
+// @Success 200 {object} models.GithubContentResponseSuccess
 // @Failure 400 {object} models.ContentResponseFailure
 // @Failure 500 {object} models.ContentResponseFailure
-// @Router /roast [post]
-func GetRoast(c *fiber.Ctx) error {
-	var req models.ContentRequest
+// @Router /roast/github [post]
+func GetGithubRoast(c *fiber.Ctx) error {
+	var req models.GithubRequest
 	if err := c.BodyParser(&req); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Error parsing request"})
+		return c.Status(fiber.StatusBadRequest).JSON(models.ContentResponseFailure{
+			Error: "Failed to parse request body",
+		})
 	}
 
 	validate := utils.NewValidator()
 	if err := validate.Struct(req); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": utils.ValidatorErrors(err)})
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": utils.ValidatorErrors(err),
+		})
 	}
 	key := req.Key
 
@@ -41,22 +45,22 @@ func GetRoast(c *fiber.Ctx) error {
 
 	redisClient, err := cache.NewRedisConnection()
 	if err != nil {
-		log.Fatalf("Couldn't connect to Redis: %v", err)
+		log.Errorf("Couldn't connect to Redis: %v", err)
 	}
 	defer func(redisClient *cache.RedisClient) {
 		err := redisClient.Close()
 		if err != nil {
-			log.Fatalf("Failed to close Redis connection: %v", err)
+			log.Errorf("Failed to close Redis connection: %v", err)
 		}
 	}(redisClient)
 
-	cacheKey := fmt.Sprintf("gemini:content:%s:%s", req.Username, req.Lang)
+	cacheKey := fmt.Sprintf("githubroast:content:%s:%s", req.Username, req.Lang)
 
 	cachedContent, err := redisClient.Get(ctx, cacheKey)
 	if err == nil && cachedContent != "" {
-		var cachedData models.ContentResponse
+		var cachedData models.GithubContentResponse
 		if err := json.Unmarshal([]byte(cachedContent), &cachedData); err == nil {
-			return c.Status(fiber.StatusOK).JSON(models.ContentResponseSuccess{
+			return c.Status(fiber.StatusOK).JSON(models.GithubContentResponseSuccess{
 				Data: cachedData,
 			})
 		}
@@ -67,7 +71,9 @@ func GetRoast(c *fiber.Ctx) error {
 	userProfile, err := githubService.GetUserProfile(ctx, req.Username)
 	if err != nil {
 		log.Errorf("Failed to get user profile: %v", err)
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to get user profile"})
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ContentResponseFailure{
+			Error: "Failed to get user profile",
+		})
 	}
 
 	var language models.Language
@@ -89,7 +95,9 @@ func GetRoast(c *fiber.Ctx) error {
 		userRepos, err := githubService.GetUserRepositories(ctx, req.Username)
 		if err != nil {
 			log.Errorf("Failed to get user repositories: %v", err)
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to get user repositories"})
+			return c.Status(fiber.StatusInternalServerError).JSON(models.ContentResponseFailure{
+				Error: "Failed to get user repositories",
+			})
 		}
 
 		var repos []models.Repository
@@ -110,19 +118,21 @@ func GetRoast(c *fiber.Ctx) error {
 	data, err := json.Marshal(githubData)
 	if err != nil {
 		log.Errorf("Failed to convert GitHub data to JSON: %v", err)
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to convert GitHub data to JSON"})
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ContentResponseFailure{
+			Error: "Failed to convert GitHub data to JSON",
+		})
 	}
 
 	var prompt string
 	if language == models.LangID {
-		prompt = fmt.Sprintf("%s %s. Detailnya seperti ini: %s\nProfile markdown: ```%s```",
+		prompt = fmt.Sprintf("%s profile github berikut: %s. Detailnya seperti ini: %s\nProfile markdown: ```%s```",
 			repository.BasePromptID,
 			req.Username,
 			data,
 			readmeResponse,
 		)
 	} else {
-		prompt = fmt.Sprintf("%s %s. Here are the details: %s\nProfile markdown: ```%s```",
+		prompt = fmt.Sprintf("%s github profiles: %s. Here are the details: %s\nProfile markdown: ```%s```",
 			repository.BasePromptEN,
 			req.Username,
 			data,
@@ -135,10 +145,12 @@ func GetRoast(c *fiber.Ctx) error {
 	resp, err := geminiService.GenerateContent(ctx, prompt)
 	if err != nil {
 		log.Errorf("Failed to generate content: %v", err)
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to generate"})
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ContentResponseFailure{
+			Error: "Failed to generate content",
+		})
 	}
 
-	cacheData := models.ContentResponse{
+	cacheData := models.GithubContentResponse{
 		Username:         *userProfile.Username,
 		AvatarURL:        *userProfile.AvatarURL,
 		GeneratedContent: resp,
@@ -154,8 +166,8 @@ func GetRoast(c *fiber.Ctx) error {
 		log.Errorf("Failed to cache content: %v", err)
 	}
 
-	return c.Status(fiber.StatusOK).JSON(models.ContentResponseSuccess{
-		Data: models.ContentResponse{
+	return c.Status(fiber.StatusOK).JSON(models.GithubContentResponseSuccess{
+		Data: models.GithubContentResponse{
 			Username:         *userProfile.Username,
 			AvatarURL:        *userProfile.AvatarURL,
 			GeneratedContent: resp,

@@ -1,6 +1,35 @@
-basePath: /api
+basePath: /api/v1
 definitions:
-  models.ContentRequest:
+  models.ContentResponse:
+    properties:
+      generated_content:
+        type: string
+    type: object
+  models.ContentResponseFailure:
+    properties:
+      error:
+        type: string
+    type: object
+  models.ContentResponseSuccess:
+    properties:
+      data:
+        $ref: '#/definitions/models.ContentResponse'
+    type: object
+  models.GithubContentResponse:
+    properties:
+      avatar_url:
+        type: string
+      generated_content:
+        type: string
+      username:
+        type: string
+    type: object
+  models.GithubContentResponseSuccess:
+    properties:
+      data:
+        $ref: '#/definitions/models.GithubContentResponse'
+    type: object
+  models.GithubRequest:
     properties:
       key:
         type: string
@@ -18,25 +47,6 @@ definitions:
     required:
     - lang
     - username
-    type: object
-  models.ContentResponse:
-    properties:
-      avatar_url:
-        type: string
-      generated_content:
-        type: string
-      username:
-        type: string
-    type: object
-  models.ContentResponseFailure:
-    properties:
-      error:
-        type: string
-    type: object
-  models.ContentResponseSuccess:
-    properties:
-      data:
-        $ref: '#/definitions/models.ContentResponse'
     type: object
   models.Language:
     enum:
@@ -60,7 +70,7 @@ info:
   title: Roast GitHub API
   version: "0.1"
 paths:
-  /roast:
+  /roast/github:
     post:
       consumes:
       - application/json
@@ -71,7 +81,44 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/models.ContentRequest'
+          $ref: '#/definitions/models.GithubRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GithubContentResponseSuccess'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ContentResponseFailure'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ContentResponseFailure'
+      summary: get roast by username and data
+      tags:
+      - Roast
+  /roast/resume:
+    post:
+      consumes:
+      - application/json
+      description: Get roast by resume.pdf
+      parameters:
+      - description: Resume as PDF
+        in: formData
+        name: file
+        required: true
+        type: file
+      - description: Language for the content default is id
+        in: formData
+        name: lang
+        type: string
+      - description: Gemini API key
+        in: formData
+        name: key
+        type: string
       produces:
       - application/json
       responses:
@@ -87,7 +134,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.ContentResponseFailure'
-      summary: get roast by username and data
+      summary: get roast by resume.pdf
       tags:
       - Roast
 securityDefinitions:

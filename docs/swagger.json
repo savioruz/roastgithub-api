@@ -14,9 +14,9 @@
         },
         "version": "0.1"
     },
-    "basePath": "/api",
+    "basePath": "/api/v1",
     "paths": {
-        "/roast": {
+        "/roast/github": {
             "post": {
                 "description": "Get roast by username and data",
                 "consumes": [
@@ -36,8 +36,64 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.ContentRequest"
+                            "$ref": "#/definitions/models.GithubRequest"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.GithubContentResponseSuccess"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ContentResponseFailure"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ContentResponseFailure"
+                        }
+                    }
+                }
+            }
+        },
+        "/roast/resume": {
+            "post": {
+                "description": "Get roast by resume.pdf",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Roast"
+                ],
+                "summary": "get roast by resume.pdf",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "Resume as PDF",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Language for the content default is id",
+                        "name": "lang",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Gemini API key",
+                        "name": "key",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -64,7 +120,53 @@
         }
     },
     "definitions": {
-        "models.ContentRequest": {
+        "models.ContentResponse": {
+            "type": "object",
+            "properties": {
+                "generated_content": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ContentResponseFailure": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ContentResponseSuccess": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/models.ContentResponse"
+                }
+            }
+        },
+        "models.GithubContentResponse": {
+            "type": "object",
+            "properties": {
+                "avatar_url": {
+                    "type": "string"
+                },
+                "generated_content": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.GithubContentResponseSuccess": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/models.GithubContentResponse"
+                }
+            }
+        },
+        "models.GithubRequest": {
             "type": "object",
             "required": [
                 "lang",
@@ -90,36 +192,6 @@
                     "type": "string",
                     "maxLength": 32,
                     "minLength": 6
-                }
-            }
-        },
-        "models.ContentResponse": {
-            "type": "object",
-            "properties": {
-                "avatar_url": {
-                    "type": "string"
-                },
-                "generated_content": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.ContentResponseFailure": {
-            "type": "object",
-            "properties": {
-                "error": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.ContentResponseSuccess": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/models.ContentResponse"
                 }
             }
         },
