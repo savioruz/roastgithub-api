@@ -6,7 +6,7 @@ Also includes a Redis caching layer to store user profiles and repositories. Oth
 [![Go](https://img.shields.io/github/go-mod/go-version/savioruz/roastgithub-api)](https://golang.org/)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/savioruz/roastgithub-api)
 [![Go Report Card](https://goreportcard.com/badge/github.com/savioruz/roastgithub-api)](https://goreportcard.com/report/github.com/savioruz/roastgithub-api)
-[![License](https://img.shields.io/github/license/savioruz/roastgithub-api)]
+![License](https://img.shields.io/github/license/savioruz/roastgithub-api)
 
 ## Table of Contents
 - [Features](#features)
@@ -100,6 +100,8 @@ You need to have Redis running on your machine.
 ### API Documentation
 
 Swagger documentation is available at: http://localhost:3000/swagger.
+
+![Preview](/assets/preview.png)
 
 ## Project Structure
 
