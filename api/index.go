@@ -3,6 +3,7 @@ package handler
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/adaptor"
+	_ "github.com/savioruz/roastgithub-api/docs" // load API Docs files (Swagger)
 	"github.com/savioruz/roastgithub-api/pkg/middleware"
 	"github.com/savioruz/roastgithub-api/pkg/routes"
 	"net/http"
