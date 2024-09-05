@@ -38,6 +38,9 @@ Also includes a Redis caching layer to store user profiles and repositories. Oth
 - ### Railway
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/jT1IvF?referralCode=XVMtOY)
 
+- ### Vercel
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsavioruz%2Froastgithub-api&env=STAGE_STATUS,APP_NAME,APP_HOST,APP_PORT,GEMINI_API_KEY,GITHUB_TOKEN,REDIS_HOST,REDIS_PORT,REDIS_PASSWORD,REDIS_DB_NUMBER&envDescription=env&project-name=roastgithub-api&repository-name=roastgithub-api)
+
 - ### Render
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/savioruz/roastgithub-api)
 

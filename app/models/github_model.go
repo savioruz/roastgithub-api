@@ -1,6 +1,6 @@
 package models
 
-import "github.com/google/go-github/v63/github"
+import "github.com/google/go-github/v64/github"
 
 type GithubData struct {
 	ProfileResponse *ProfileResponse `json:"profile,omitempty"`
