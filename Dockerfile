@@ -20,7 +20,7 @@ ENV CGO_ENABLED=0 GOOS=linux GOARCH=amd64
 RUN go build -ldflags="-s -w" -o roastgithub-api .
 
 # Stage 2
-FROM scratch
+FROM alpine:latest
 
 # Copy CA certificates from the builder stage to enable SSL verification
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
