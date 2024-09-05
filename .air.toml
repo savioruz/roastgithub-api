@@ -3,25 +3,25 @@
 # Working directory
 # . or absolute path, please note that the directories following must be under root.
 root = "."
-tmp_dir = "tmp"
+tmp_dir = ".build"
 
 [build]
 # Array of commands to run before each build
 #pre_cmd = ["swag init"]
 # Just plain old shell command. You could use `make` as well.
-cmd = "go build -o ./tmp/main ."
+cmd = "go build -o ./.build/main ."
 # Array of commands to run after ^C
 #post_cmd = ["echo 'hello air' > post_cmd.txt"]
 # Binary file yields from `cmd`.
-bin = "tmp/main"
+bin = ".build/main"
 # Customize binary, can setup environment variables when run your app.
-full_bin = "APP_ENV=dev APP_USER=air ./tmp/main"
-# Add additional arguments when running binary (bin/full_bin). Will run './tmp/main hello world'.
+full_bin = "APP_ENV=dev APP_USER=air ./.build/main"
+# Add additional arguments when running binary (bin/full_bin). Will run './.build/main hello world'.
 args_bin = ["hello", "world"]
 # Watch these filename extensions.
-include_ext = ["go", "tpl", "tmpl", "html"]
+include_ext = ["go", "tpl", ".buildl", "html"]
 # Ignore these filename extensions or directories.
-exclude_dir = ["assets", "tmp", "vendor", "template/node_modules"]
+exclude_dir = ["assets", ".build", "vendor", "template/node_modules"]
 # Watch these directories if you specified.
 include_dir = []
 # Watch these files.
@@ -34,7 +34,7 @@ exclude_regex = ["_test\\.go"]
 exclude_unchanged = true
 # Follow symlink for directories
 follow_symlink = true
-# This log file places in your tmp_dir.
+# This log file places in your .build_dir.
 log = "air.log"
 # Poll files for changes instead of using fsnotify.
 poll = false
@@ -67,7 +67,7 @@ build = "yellow"
 runner = "green"
 
 [misc]
-# Delete tmp directory on exit
+# Delete .build directory on exit
 clean_on_exit = true
 
 [screen]
