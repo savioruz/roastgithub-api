@@ -28,8 +28,5 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 # Copy binary and config files from /build to root folder of scratch container.
 COPY --from=builder ["/build/roastgithub-api", "/build/.env", "/"]
 
-# Create the /storage directory in the final image
-COPY --from=builder /build/tmp /tmp
-
 # Command to run when starting the container.
 ENTRYPOINT ["/roastgithub-api"]

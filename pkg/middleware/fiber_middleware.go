@@ -11,7 +11,7 @@ func FiberMiddleware(a *fiber.App) {
 	a.Use(logger.New())
 	a.Use(recover.New())
 	a.Use(cors.New(cors.Config{
-		AllowOrigins: "https://*.savioruz.me",
+		AllowOrigins: "https://*.savioruz.me, https://roastgithub-api.vercel.app",
 		AllowHeaders: "Origin, Content-Type, Accept",
 		AllowMethods: "GET,POST",
 	}))
