@@ -5,9 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/adaptor"
 	"github.com/savioruz/roastgithub-api/pkg/middleware"
 	"github.com/savioruz/roastgithub-api/pkg/routes"
-	"github.com/savioruz/roastgithub-api/pkg/utils"
 	"net/http"
-	"os"
 )
 
 // initializeHandler is a function to initialize the handler
@@ -21,13 +19,6 @@ func initializeHandler() http.HandlerFunc {
 	routes.PublicRoutes(app)
 	routes.SwaggerRoute(app)
 	routes.NotFoundRoute(app)
-
-	// Start server (with or without graceful shutdown).
-	if os.Getenv("STAGE_STATUS") == "dev" {
-		utils.StartServer(app)
-	} else {
-		utils.StartServerWithGracefulShutdown(app)
-	}
 
 	return adaptor.FiberApp(app)
 }
