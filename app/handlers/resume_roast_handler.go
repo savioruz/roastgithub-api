@@ -67,7 +67,7 @@ func GetResumeRoast(c *fiber.Ctx) error {
 		})
 	}
 
-	path := fmt.Sprintf("./tmp/%s", file.Filename)
+	path := fmt.Sprintf("/tmp/%s", file.Filename)
 	s := c.SaveFile(file, path)
 	if s != nil {
 		log.Errorf("Failed to save file: %v", s)
